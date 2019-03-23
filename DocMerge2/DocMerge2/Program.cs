@@ -21,29 +21,35 @@ namespace DocumentMerger2
                     foreach (string file in args)
                     {
                         string lastFile = args.Last();
-                        string outputFile = lastFile + ".txt";
+                        //string outputFile = lastFile + ".txt";
                         string allText = System.IO.File.ReadAllText(file + ".txt");
                         if (File.Exists(file + ".txt"))
                         {
                             Console.WriteLine("The file exists.");
+                            try
+                            {
+                                using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
+                                {
+                                    System.IO.File.AppendAllText(lastFile, allText);
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("Exception: " + e.Message);
+                            }
 
                         }
                         else
                         {
                             Console.WriteLine("The file does not exist. Please try again.");
-                        }
-                        try
-                        {
-                            using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
-                            {
-                                System.IO.File.AppendAllText(outputFile, allText);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine("Exception: " + e.Message);
+                            throw new FileNotFoundException();
                         }
                     }
+                    string finalFile = System.IO.File.ReadAllText(args.Last() + ".txt");
+                    string LastFile = (args.Last() + ".txt");
+                    Console.WriteLine("\n");
+                    Console.WriteLine("The final product is: " + LastFile);
+                    Console.WriteLine("The contents of " + LastFile + " are: " + finalFile);
                 }
                 else
                 {
@@ -53,6 +59,21 @@ namespace DocumentMerger2
 
 
 
+
+                /*try
+                        {
+                            using (FileStream fs = new FileStream(file, FileMode.OpenOrCreate))
+                            {
+                                System.IO.File.AppendAllText(lastFile, allText);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Exception: " + e.Message);
+                        }
+                        /*string finalFile = System.IO.File.ReadAllText(outputFile);
+                        Console.WriteLine("\n");
+                        Console.WriteLine("The final product is: " + finalFile); */
 
 
 
